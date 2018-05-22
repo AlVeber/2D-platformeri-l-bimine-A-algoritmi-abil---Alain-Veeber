@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class NodeClass : MonoBehaviour{
+	public int jumpValue=2;
+	public bool jumpVertical = false;
+	public bool lastVertical = false;
 	public int x;
 	public int y;
 	public int cost=0;
