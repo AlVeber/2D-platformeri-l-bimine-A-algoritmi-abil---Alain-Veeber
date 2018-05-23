@@ -35,7 +35,7 @@ public class NodeClass : MonoBehaviour{
 			grid.GetComponent<AStar> ().setAINode (this.gameObject);
 
 		}
-		if (coll.name == "Target") {
+		if (coll.name == "Target" ||  coll.name == "Target(Clone)") {
 			print ("Target Triggered: "+ gameObject.name);
 			grid.GetComponent<AStar> ().setTagretNode (this.gameObject);
 

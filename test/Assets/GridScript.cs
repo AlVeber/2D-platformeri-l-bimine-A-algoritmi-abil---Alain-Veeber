@@ -44,20 +44,20 @@ public class GridScript : MonoBehaviour{
 
 				if (tile != null) {
 					s += "  1";
-					Debug.Log ("Platform at : " +x +" - "+ y);
+					//Debug.Log ("Platform at : " +x +" - "+ y);
 				
 					//Debug.Log ("Tile put at x: "+x+" y: "+j);
 					//nodeArray [bsy-1-y,x] = tile;
-					GameObject block = (GameObject)Instantiate (blockPrefab, new Vector3 (x-10 + 0.5f + gridBase.transform.position.x, y-5 + 0.5f+ gridBase.transform.position.y, 0), Quaternion.Euler (0, 0, 0));
+					GameObject block = (GameObject)Instantiate (blockPrefab, new Vector3 (x + 0.5f + gridBase.transform.position.x, y + 0.5f+ gridBase.transform.position.y, 0), Quaternion.Euler (0, 0, 0));
 
 					nodeGrid [y,x] = block;
 					//nodeRow [x] = node;
 
 				} else {
 					s += "  0" ;
-					print ("new node: X: " + x + " Y: " + y);
+					//print ("new node: X: " + x + " Y: " + y);
 	
-					GameObject node = (GameObject)Instantiate (nodePrefab, new Vector3 (x-10 + 0.5f + gridBase.transform.position.x, y-5 + 0.5f+ gridBase.transform.position.y, 0), Quaternion.Euler (0, 0, 0));
+					GameObject node = (GameObject)Instantiate (nodePrefab, new Vector3 (x + 0.5f + gridBase.transform.position.x, y + 0.5f+ gridBase.transform.position.y, 0), Quaternion.Euler (0, 0, 0));
 					node.GetComponent<NodeClass> ().setNodeValues (x, y, 0);
 
 					//nodeArray [bsy-1-y,x] = null;
@@ -65,7 +65,7 @@ public class GridScript : MonoBehaviour{
 					//nodeRow [x] = node;
 				}
 			}
-			Debug.Log ("y="+y+"|"+s);
+			//Debug.Log ("y="+y+"|"+s);
 			//nodeGrid2 [y] = nodeRow;
 
 

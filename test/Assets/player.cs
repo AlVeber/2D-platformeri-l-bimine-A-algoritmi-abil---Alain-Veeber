@@ -17,20 +17,28 @@ public class player : MonoBehaviour {
 		movePlayer ();
 
 	}
-	void moveLeft(){
+	public void moveLeft(){
 		transform.Translate(-1.0f,0.0f,0.0f);
 
 	}
-	void moveRight(){
+	public void moveRight(){
 		transform.Translate(1.0f,0.0f,0.0f);
 
 	}
-	void moveUp(){
+	public void moveUp(){
 		transform.Translate(0.0f,1.0f,0.0f);
 	}
-	void moveDown(){
+	public void moveDown(){
 		transform.Translate(0.0f,-1.0f,0.0f);
 
+	}
+
+	void OnTriggerEnter2D(Collider2D coll){
+		print ("AI Triggered by " + coll.name); 
+		if (coll.name == "Target" || coll.name == "Target(Clone)") {
+			Destroy (coll.gameObject);
+			print ("Target Destroyed"); 
+		}
 	}
 
 	private void movePlayer(){
