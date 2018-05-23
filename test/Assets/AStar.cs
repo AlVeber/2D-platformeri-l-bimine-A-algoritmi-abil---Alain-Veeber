@@ -4,169 +4,54 @@ using UnityEngine;
 using System.Linq;
 
 
-public class AStar : MonoBehaviour {
-	[SerializeField]
-	public GameObject AI;
+public class AStar : MonoBehaviour
+{
+
+	public GameObject NPC;
 	private GameObject targetNode;
-	private GameObject AINode;
-	[SerializeField]
+	private GameObject NPCNode;
 	public Grid grid;
-	[SerializeField]
 	public Sprite torch;
 	public GameObject[,] nodeGrid;
-	// Use this for initialization
-	private bool isAbleToStart= true;
-	private bool astarWorking= false;
-	public bool pathReady= false;
-	public List<GameObject> pathList;
-	public List<GameObject> openSet;
-	public List<GameObject> closedSet;
-	void Start () {
+	private bool isAbleToStart = true;
+	private bool astarWorking = false;
+	private bool pathReady = false;
+	private List<GameObject> pathList;
+	private List<GameObject> openSet;
+	private List<GameObject> closedSet;
+
+	void Start ()
+	{
 		
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 		
-		if (targetNode != null && AINode != null && isAbleToStart == true && astarWorking== false) {
+		if (targetNode != null && NPCNode != null && isAbleToStart == true && astarWorking == false) {
 			isAbleToStart = false;
 			Astar ();
 		}
 
-		if (pathReady==true) {
-			
 
-				GameObject currentNode = pathList.Last ();
-				pathList.Remove (pathList.Last ());
-
-				int currentX = currentNode.GetComponent<NodeClass> ().x;
-				int currentY = currentNode.GetComponent<NodeClass> ().y;
-				print ("Walking: current node x: " + currentX + " y : " + currentY);
-
-				if (currentX == targetNode.GetComponent<NodeClass> ().x && currentY == targetNode.GetComponent<NodeClass> ().y) {
-					
-					print ("Walking: Found at X= " + currentX + " Y= " + currentY);
-					print ("no more path");
-
-					currentX = AINode.GetComponent<NodeClass> ().x;
-					currentY = AINode.GetComponent<NodeClass> ().y;
-					int targetX = targetNode.GetComponent<NodeClass> ().x;
-					int targetY = targetNode.GetComponent<NodeClass> ().y;
-
-					GameObject right = nodeGrid [currentY, currentX + 1];
-					GameObject left = nodeGrid [currentY, currentX - 1];
-					GameObject up = nodeGrid [currentY + 1, currentX];
-					GameObject down = nodeGrid [currentY - 1, currentX];
-					
-					print ("Walking: Found at X= " + targetX + " Y= " + targetY);
-
-				if (targetNode == left) {
-					AI.GetComponent<player> ().moveLeft ();
-					print ("player moves left");
-
-				} else if (targetNode == right) {
-
-					AI.GetComponent<player> ().moveRight ();
-					print ("player moves right");
-
-				} else if (targetNode == up) {
-
-					AI.GetComponent<player> ().moveUp ();
-					print ("player moves up");
-
-				} else {
-					AI.GetComponent<player> ().moveDown ();
-					print ("player moves down");
-
-				}
-
-
-
-
-
-
-					pathReady = false;
-					pathList = null;
-
-
-
-				} else {
-					
-					GameObject right = nodeGrid [currentY, currentX + 1];
-					GameObject left = nodeGrid [currentY, currentX - 1];
-					GameObject up = nodeGrid [currentY + 1, currentX];
-					GameObject down = nodeGrid [currentY - 1, currentX];
-
-
-					GameObject nextNode = pathList.Last ();
-					print ("Walking: next node x: " + nextNode.GetComponent<NodeClass>().x + " y : " + nextNode.GetComponent<NodeClass>().y);
-
-
-					if (nextNode == left) {
-						AI.GetComponent<player> ().moveLeft ();
-						print ("player moves left");
-				
-					} else if (nextNode == right) {
-				
-						AI.GetComponent<player> ().moveRight ();
-					print ("player moves right");
-
-					} else if (nextNode == up) {
-			
-						AI.GetComponent<player> ().moveUp ();
-					print ("player moves up");
-
-					} else {
-						AI.GetComponent<player> ().moveDown ();
-					print ("player moves down");
-
-					}
-				}
-
-				
-
-
-
-		}
 
 	}
 
-	public void Astar(){
-			astarWorking = true;
+	public void Astar ()
+	{
+		astarWorking = true;
 		
 
-			nodeGrid = grid.GetComponent<GridScript> ().nodeGrid;
-			print ("Started A*");
-			/*int rowLength = nodeGrid.GetLength (1);
-			int colLength = nodeGrid.GetLength (0);
-			print ("Astar node grid");
-			for (int i = 0; i < colLength; i++) {
-				string s2 = "";
-				for (int j = 0; j < rowLength; j++) {
-					//Debug.Log ("x: "+i + " - y: " + j);
-				if (nodeGrid [i, j].name == "Node(Clone)") {
+		nodeGrid = grid.GetComponent<GridScript> ().nodeGrid;
+		print ("Started A*");
 
-						s2 += " " + nodeGrid [i, j].name;
-						GameObject node = nodeGrid [i, j];
-						node.GetComponent<NodeClass> ().manhattanDistance = Mathf.Abs (targetNode.GetComponent<NodeClass>().x-
-							node.GetComponent<NodeClass>().x )+Mathf.Abs (targetNode.GetComponent<NodeClass>().y-node.GetComponent<NodeClass>().y);
-						print ("node " +" x: "+ nodeGrid [i, j].GetComponent<NodeClass> ().x+ " y: "+ nodeGrid [i, j].GetComponent<NodeClass> ().y+" got manhattanValue" + node.GetComponent<NodeClass> ().manhattanDistance);
-
-
-					} else {
-						s2 += " plat";
-					}
-
-
-				}
-				Debug.Log (s2);
-			}
-		*/
-			Search ();
+		Search ();
 	
 	
 
-		isAbleToStart = false;
+
+		//isAbleToStart = true;
 	}
 
 
@@ -174,20 +59,21 @@ public class AStar : MonoBehaviour {
 
 
 
-	public void  setTagretNode(GameObject targetNode){
+	public void  setTagretNode (GameObject targetNode)
+	{
 		this.targetNode = targetNode;
-		//Debug.Log ("Astar has target node");
-
-		Debug.Log ("Astar has target node: X:"+ targetNode.GetComponent<NodeClass>().x + " Y: " + targetNode.GetComponent<NodeClass>().y);
+		Debug.Log ("Astar has target node: X:" + targetNode.GetComponent<NodeClass> ().x + " Y: " + targetNode.GetComponent<NodeClass> ().y);
 	}
-	public void setAINode(GameObject AINode){
-		this.AINode = AINode;
-		//Debug.Log ("Astar has AI node");
-		Debug.Log ("Astar has AI node: X:"+ AINode.GetComponent<NodeClass>().x + " Y: " + AINode.GetComponent<NodeClass>().y);
-	}
-	
 
-	public void Search(){
+	public void setAINode (GameObject NPCNode)
+	{
+		this.NPCNode = NPCNode;
+		Debug.Log ("Astar has NPC node: X:" + NPCNode.GetComponent<NodeClass> ().x + " Y: " + NPCNode.GetComponent<NodeClass> ().y);
+	}
+
+
+	public void Search ()
+	{
 		
 		pathList = new List<GameObject> ();
 		openSet = new List<GameObject> ();
@@ -196,35 +82,30 @@ public class AStar : MonoBehaviour {
 
 
 		print ("Started search");
-		openSet.Add (AINode);
+		openSet.Add (NPCNode);
 		int targetX = targetNode.GetComponent<NodeClass> ().x;
 		int targetY = targetNode.GetComponent<NodeClass> ().y;
-		GameObject currentNode = AINode;
+		GameObject currentNode = NPCNode;
 		int count = 0;
-		int i = 0;
-		int jumpLeft = 2;
 		bool solutionFound = false;
-		bool savedNode = false;
 		bool upBlock = false;
-		bool verticalBlock = false;
+		bool horizontalBlock = false;
 		pathReady = false;
-		while (openSet.Count != 0) {
-			if (savedNode == false) {
-				
-				currentNode = getCheapest ();
-			} else {
-				savedNode = false;
-			}
 
-			i++;
+		while (openSet.Count != 0) {
+			
+				
+			currentNode = getCheapest ();
+
 			count++;
 
 			int currentX = currentNode.GetComponent<NodeClass> ().x;
 			int currentY = currentNode.GetComponent<NodeClass> ().y;
 
-			print ("current node x: " + currentX + " y : " + currentY + " lastvertical = " + currentNode.GetComponent<NodeClass> ().lastVertical+ " jumpval: " + currentNode.GetComponent<NodeClass> ().jumpValue);
+			print ("Current node x: " + currentX + " y : " + currentY + " lastvertical = " + currentNode.GetComponent<NodeClass> ().lastVertical+ " jumpval: " + currentNode.GetComponent<NodeClass> ().jumpValue);
+
 			if (currentX == targetX && currentY == targetY) {
-				print ("Found at X= " + currentX + " Y= " + currentY);
+				print ("Target found at X= " + currentX + " Y= " + currentY);
 				solutionFound = true;
 				getSolution (currentNode);
 				break;
@@ -235,70 +116,50 @@ public class AStar : MonoBehaviour {
 			GameObject up = nodeGrid [currentY + 1, currentX];
 			GameObject down = nodeGrid [currentY - 1, currentX];
 
-
-
-			print ("check0 " + currentNode.GetComponent<NodeClass>().jumpValue);
+		
 
 
 			if (down.name == "Block(Clone)") {
-				print ("Grounded!!!");
-				jumpLeft = 2;
+				//print ("Grounded!!!");
 				currentNode.GetComponent<NodeClass> ().jumpValue = 2;
 				upBlock = false;
-				verticalBlock = false;
+				horizontalBlock = false;
 			} else {
-				print ("Not grounded!!!");
+				//print ("Not grounded!!!");
 				//currentNode.GetComponent<NodeClass> ().jumpValue = jumpLeft;
 				if (currentNode.GetComponent<NodeClass> ().lastVertical == true && currentNode.GetComponent<NodeClass> ().parent.GetComponent<NodeClass> ().jumpValue == 2) {
-					print ("Walked into thin air parent jump value : "+ currentNode.GetComponent<NodeClass> ().parent.GetComponent<NodeClass> ().jumpValue+
-						"parent x : "+ currentNode.GetComponent<NodeClass> ().parent.GetComponent<NodeClass> ().x+ " parent y: "+currentNode.GetComponent<NodeClass> ().parent.GetComponent<NodeClass> ().y);
-					jumpLeft = 0;
+					//print ("Walked into thin air parent jump value : " + currentNode.GetComponent<NodeClass> ().parent.GetComponent<NodeClass> ().jumpValue +
+					//"parent x : " + currentNode.GetComponent<NodeClass> ().parent.GetComponent<NodeClass> ().x + " parent y: " + currentNode.GetComponent<NodeClass> ().parent.GetComponent<NodeClass> ().y);
 					currentNode.GetComponent<NodeClass> ().jumpValue = 0;
-					verticalBlock = true;
+					horizontalBlock = true;
 					upBlock = true;
 
 				} else {	
-					print ("check0 " + currentNode.GetComponent<NodeClass>().jumpValue);
+					
 
 					if (currentNode.GetComponent<NodeClass> ().jumpValue < 1) {
-						print ("no more jumps allowed form this node");
+						//print ("No more jumps allowed form this node");
 						upBlock = true;
 					} else {
-						print ("Jumps allowed form this node");
+						//print ("Jumps allowed form this node");
 						upBlock = false;
 					}
-
-					/*
-					if (jumpLeft < 1 && upBlock == false) {
-						print ("Blocking up");
-						upBlock = true;
-					} else {
-						upBlock = false;
-					}
-					*/
-					print ("check0 " + currentNode.GetComponent<NodeClass>().jumpValue);
+						
 
 					if (currentNode.GetComponent<NodeClass> ().jumpVertical == true) {
-						print ("Blocking vertical");
+						//print ("Blocking horizontal");
 
-						verticalBlock = true;
+						horizontalBlock = true;
 					} else {
-						verticalBlock = false;
+						horizontalBlock = false;
 					}
-					print ("check0 " + currentNode.GetComponent<NodeClass>().jumpValue);
 
-
-					if (down.name != "Block(Clone)") {
-						jumpLeft--;
-						print ("In air!!! jumpLeft: " + jumpLeft);
-
-					}
 				}
 			}
 			
 
 			
-			print ("check0 " + currentNode.GetComponent<NodeClass>().jumpValue);
+
 
 			closedSet.Add (currentNode);
 			openSet.Remove (currentNode);
@@ -311,13 +172,13 @@ public class AStar : MonoBehaviour {
 				//print ("Checking upper node x: " + up.GetComponent<NodeClass> ().x + " y: " + up.GetComponent<NodeClass> ().y + " count: " + count);
 				openSet.Add (up);
 				up.GetComponent<NodeClass> ().lastVertical = false;
-				up.GetComponent<NodeClass> ().jumpValue= Mathf.Abs( up.GetComponent<NodeClass> ().jumpValue- currentNode.GetComponent<NodeClass>().jumpValue -1);
-				up.GetComponent<NodeClass> ().cost = currentNode.GetComponent<NodeClass> ().cost+3 ;
+				up.GetComponent<NodeClass> ().jumpValue = Mathf.Abs (up.GetComponent<NodeClass> ().jumpValue - currentNode.GetComponent<NodeClass> ().jumpValue - 1);
+				up.GetComponent<NodeClass> ().cost = currentNode.GetComponent<NodeClass> ().cost + 3;
 				up.GetComponent<NodeClass> ().parent = currentNode;
-				print ("Checking upper node x: " + up.GetComponent<NodeClass> ().x + " y: " + up.GetComponent<NodeClass> ().y + " count: " + count+ " jumpval: " + up.GetComponent<NodeClass> ().jumpValue);
-				up.GetComponent<NodeClass> ().manhattanDistance = Mathf.Abs (targetNode.GetComponent<NodeClass>().x-
-					up.GetComponent<NodeClass>().x )+Mathf.Abs (targetNode.GetComponent<NodeClass>().y-up.GetComponent<NodeClass>().y);
-				jumpLeft--;
+				print ("Checking upper node x: " + up.GetComponent<NodeClass> ().x + " y: " + up.GetComponent<NodeClass> ().y + " count: " + count + " jumpval: " + up.GetComponent<NodeClass> ().jumpValue);
+				up.GetComponent<NodeClass> ().manhattanDistance = Mathf.Abs (targetNode.GetComponent<NodeClass> ().x -
+				up.GetComponent<NodeClass> ().x) + Mathf.Abs (targetNode.GetComponent<NodeClass> ().y - up.GetComponent<NodeClass> ().y);
+			
 
 
 
@@ -327,52 +188,53 @@ public class AStar : MonoBehaviour {
 				openSet.Add (down);
 				down.GetComponent<NodeClass> ().lastVertical = false;
 				down.GetComponent<NodeClass> ().jumpValue = 0;
-				down.GetComponent<NodeClass> ().cost = currentNode.GetComponent<NodeClass> ().cost+3;
+				down.GetComponent<NodeClass> ().cost = currentNode.GetComponent<NodeClass> ().cost + 3;
 				down.GetComponent<NodeClass> ().parent = currentNode;
-				//verticalBlock = false;
-				down.GetComponent<NodeClass> ().manhattanDistance = Mathf.Abs (targetNode.GetComponent<NodeClass>().x-
-					down.GetComponent<NodeClass>().x )+Mathf.Abs (targetNode.GetComponent<NodeClass>().y-down.GetComponent<NodeClass>().y);
+				//horizontalBlock = false;
+				down.GetComponent<NodeClass> ().manhattanDistance = Mathf.Abs (targetNode.GetComponent<NodeClass> ().x -
+				down.GetComponent<NodeClass> ().x) + Mathf.Abs (targetNode.GetComponent<NodeClass> ().y - down.GetComponent<NodeClass> ().y);
 			}
 
-			if ((right.name != "Block(Clone)") && (!openSet.Contains (right)) && (!closedSet.Contains (right)) && verticalBlock == false) {
-				if (currentNode.GetComponent<NodeClass>().jumpValue<2) {
+			if ((right.name != "Block(Clone)") && (!openSet.Contains (right)) && (!closedSet.Contains (right)) && horizontalBlock == false) {
+				if (currentNode.GetComponent<NodeClass> ().jumpValue < 2) {
 					right.GetComponent<NodeClass> ().jumpVertical = true;
-					right.GetComponent<NodeClass> ().jumpValue=currentNode.GetComponent<NodeClass>().jumpValue;
+					right.GetComponent<NodeClass> ().jumpValue = currentNode.GetComponent<NodeClass> ().jumpValue;
 
 
 				}
 
 				openSet.Add (right);
 				right.GetComponent<NodeClass> ().lastVertical = true;
-				right.GetComponent<NodeClass> ().cost = currentNode.GetComponent<NodeClass> ().cost+2;
+				right.GetComponent<NodeClass> ().cost = currentNode.GetComponent<NodeClass> ().cost + 2;
 				right.GetComponent<NodeClass> ().parent = currentNode;
-				print ("Checking right node x: " + right.GetComponent<NodeClass> ().x + " y: " + right.GetComponent<NodeClass> ().y + " count: " + right.GetComponent<NodeClass> ().cost + "jumpVal"+ right.GetComponent<NodeClass> ().jumpValue);
-				right.GetComponent<NodeClass> ().manhattanDistance = Mathf.Abs (targetNode.GetComponent<NodeClass>().x-
-					right.GetComponent<NodeClass>().x )+Mathf.Abs (targetNode.GetComponent<NodeClass>().y-right.GetComponent<NodeClass>().y);
+				print ("Checking right node x: " + right.GetComponent<NodeClass> ().x + " y: " + right.GetComponent<NodeClass> ().y + " count: " + right.GetComponent<NodeClass> ().cost + "jumpVal" + right.GetComponent<NodeClass> ().jumpValue);
+				right.GetComponent<NodeClass> ().manhattanDistance = Mathf.Abs (targetNode.GetComponent<NodeClass> ().x -
+				right.GetComponent<NodeClass> ().x) + Mathf.Abs (targetNode.GetComponent<NodeClass> ().y - right.GetComponent<NodeClass> ().y);
 
 			}
 
 
-			if ((left.name != "Block(Clone)") && (!openSet.Contains (left)) && (!closedSet.Contains (left)) && verticalBlock == false) {
-				print ("check1" + currentNode.GetComponent<NodeClass>().jumpValue);
-				if (currentNode.GetComponent<NodeClass>().jumpValue<2) {
-					print ("check2" + currentNode.GetComponent<NodeClass>().jumpValue);
+			if ((left.name != "Block(Clone)") && (!openSet.Contains (left)) && (!closedSet.Contains (left)) && horizontalBlock == false) {
+				if (currentNode.GetComponent<NodeClass> ().jumpValue < 2) {
 					left.GetComponent<NodeClass> ().jumpVertical = true;
-					left.GetComponent<NodeClass> ().jumpValue=currentNode.GetComponent<NodeClass>().jumpValue;
+					left.GetComponent<NodeClass> ().jumpValue = currentNode.GetComponent<NodeClass> ().jumpValue;
 
 				}
 
 				openSet.Add (left);
 				left.GetComponent<NodeClass> ().lastVertical = true;
-				left.GetComponent<NodeClass> ().cost = currentNode.GetComponent<NodeClass> ().cost+2;
+				left.GetComponent<NodeClass> ().cost = currentNode.GetComponent<NodeClass> ().cost + 2;
 				left.GetComponent<NodeClass> ().parent = currentNode;
-				print ("Checking left node x: " + left.GetComponent<NodeClass> ().x + " y: " + left.GetComponent<NodeClass> ().y + " count: " + left.GetComponent<NodeClass> ().cost + "jumpVal"+ left.GetComponent<NodeClass> ().jumpValue);
-				left.GetComponent<NodeClass> ().manhattanDistance = Mathf.Abs (targetNode.GetComponent<NodeClass>().x-
-					left.GetComponent<NodeClass>().x )+Mathf.Abs (targetNode.GetComponent<NodeClass>().y-left.GetComponent<NodeClass>().y);
+				print ("Checking left node x: " + left.GetComponent<NodeClass> ().x + " y: " + left.GetComponent<NodeClass> ().y + " count: " + left.GetComponent<NodeClass> ().cost + "jumpVal" + left.GetComponent<NodeClass> ().jumpValue);
+				left.GetComponent<NodeClass> ().manhattanDistance = Mathf.Abs (targetNode.GetComponent<NodeClass> ().x -
+				left.GetComponent<NodeClass> ().x) + Mathf.Abs (targetNode.GetComponent<NodeClass> ().y - left.GetComponent<NodeClass> ().y);
 				
 
 			}
-			/*print ("openSet printing");
+
+
+			//To print current openset
+			/*print ("OpenSet printing");
 			for (int h = 0; h < openSet.Count; h++) {
 
 				print ("x: " + openSet [h].GetComponent<NodeClass> ().x + " y: " + openSet [h].GetComponent<NodeClass> ().y + " m: " + openSet [h].GetComponent<NodeClass> ().manhattanDistance + " c: " + openSet [h].GetComponent<NodeClass> ().cost);
@@ -380,65 +242,125 @@ public class AStar : MonoBehaviour {
 
 			}*/
 
-			/*
-			if (i > 2000) {
-				
-				break;
-			}*/
+
 
 		}
 			
 
-			if (solutionFound == false) {
-				print ("Target not found!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-			}
+		if (solutionFound == false) {
+			print ("Target not found!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		}
 		astarWorking = false;
 
 	}
-	
+
 
 	
 	
-	public  GameObject getCheapest(){
-	print ("Getting getCheapest node");
+	public  GameObject getCheapest ()
+	{
 		int min = 9999999;
 		GameObject cheapestNode = null;
-		for (int i = 0; i < openSet.Count; i++) {
-		
+		for (int i = 0; i < openSet.Count; i++) {	
 			int newMin = openSet [i].GetComponent<NodeClass> ().manhattanDistance + openSet [i].GetComponent<NodeClass> ().cost;
-			if ( newMin  <= min) {
+			if (newMin <= min) {
 				min = newMin;
-				cheapestNode= openSet [i];
+				cheapestNode = openSet [i];
 			}
 
 
 		}
-		print ("Cheapest node x: " + cheapestNode.GetComponent<NodeClass> ().x + " y: " + cheapestNode.GetComponent<NodeClass> ().y);
+		//print ("Cheapest node x: " + cheapestNode.GetComponent<NodeClass> ().x + " y: " + cheapestNode.GetComponent<NodeClass> ().y);
 		return cheapestNode;
 
 	}
-	public void getSolution(GameObject currentNode){
+
+	public void getSolution (GameObject currentNode)
+	{
 		
-		print ("Final Path") ;
+		//print ("------------------------------Final Path-------------------------------------") ;
 		while (currentNode.GetComponent<NodeClass> ().parent != null) {
 			pathList.Add (currentNode);
 			currentNode.GetComponent<SpriteRenderer> ().sprite = torch;
-			print("x: "+currentNode.GetComponent<NodeClass>().x +" y: "+currentNode.GetComponent<NodeClass>().y);
-			currentNode= currentNode.GetComponent<NodeClass> ().parent;
+			//print("x: "+currentNode.GetComponent<NodeClass>().x +" y: "+currentNode.GetComponent<NodeClass>().y);
+			currentNode = currentNode.GetComponent<NodeClass> ().parent;
 		}
 
 		pathReady = true;
+		InvokeRepeating ("movePlayer", 1.0f, 0.3f);
+		if (pathReady == false) {
+			CancelInvoke ("movePlayer");
+		}
 	}
-	public void movePlayer (){
+
+	public void movePlayer ()
+	{
+		GameObject nextNode = NPCNode;
+
+		if (pathReady == true) {
+
+			GameObject currentNode = nextNode;
+
+			int currentX = currentNode.GetComponent<NodeClass> ().x;
+			int currentY = currentNode.GetComponent<NodeClass> ().y;
+			print ("Walking: current node x: " + currentX + " y : " + currentY);
+
+			GameObject right = nodeGrid [currentY, currentX + 1];
+			GameObject left = nodeGrid [currentY, currentX - 1];
+			GameObject up = nodeGrid [currentY + 1, currentX];
+			GameObject down = nodeGrid [currentY - 1, currentX];
+
+			nextNode = pathList.Last ();
+			pathList.Remove (pathList.Last ());
+			//print ("Walking: next node x: " + nextNode.GetComponent<NodeClass> ().x + " y : " + nextNode.GetComponent<NodeClass> ().y);
+
+			if (nextNode == left) {
+				NPC.GetComponent<player> ().moveLeft ();
+				//print ("Player moves left");
+
+			} else if (nextNode == right) {
+
+				NPC.GetComponent<player> ().moveRight ();
+				//print ("Player moves right");
+
+			} else if (nextNode == up) {
+
+				NPC.GetComponent<player> ().moveUp ();
+				//print ("Player moves up");
+
+			} else if ((nextNode == down)) {
+				NPC.GetComponent<player> ().moveDown ();
+				//print ("Player moves down");
+
+			} else {
+				print ("Something wrong!!!!!!!! No movement direction!!!!!!!");
+				pathReady = false;
+			}
+		
+			if (nextNode.GetComponent<NodeClass> ().x == targetNode.GetComponent<NodeClass> ().x &&
+			    nextNode.GetComponent<NodeClass> ().y == targetNode.GetComponent<NodeClass> ().y) {
+				print ("Walking: Target found at X= " + currentX + " Y= " + currentY);
+
+				pathReady = false;
+				pathList = null;
+				targetNode = null;
+
+			}
 
 
+
+
+
+
+		}
 
 	}
 		
 
 
 
-	}
+
+}
 
 
 

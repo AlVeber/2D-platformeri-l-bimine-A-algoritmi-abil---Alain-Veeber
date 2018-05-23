@@ -13,8 +13,8 @@ public class player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-		movePlayer ();
+		//MovePlayer with wasd
+		//movePlayer ();
 
 	}
 	public void moveLeft(){
@@ -34,13 +34,13 @@ public class player : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D coll){
-		print ("AI Triggered by " + coll.name); 
+		//print ("NPC Triggered by " + coll.name); 
 		if (coll.name == "Target" || coll.name == "Target(Clone)") {
 			Destroy (coll.gameObject);
 			print ("Target Destroyed"); 
 		}
 	}
-
+	/*
 	private void movePlayer(){
 		if (Input.GetKeyDown (KeyCode.W)) {
 			transform.Translate(0.0f,1.0f,0.0f);
@@ -54,5 +54,5 @@ public class player : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.D)) {
 			transform.Translate(1.0f,0.0f,0.0f);
 		}
-	}
+	}*/
 }
